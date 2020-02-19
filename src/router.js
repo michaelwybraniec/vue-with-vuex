@@ -11,22 +11,27 @@ export default new Router({
   routes: [
     {
       path: "/",
-      redirect: "/people"
+      redirect: "/heroes"
     },
     {
-      path: "/people",
-      name: "people",
-      component: () => import("./views/people.vue")
+      path: "/heroes",
+      name: "heroes",
+      component: () =>
+        import(/* webpackChunkName: "bundle.heroes" */ "./views/heroes.vue")
     },
     {
-      path: "/people/:id",
-      name: "person-detail",
-      component: () => import("./views/person-detail.vue")
+      path: "/hero/:id",
+      name: "hero-detail",
+      // props: true,
+      props: parseProps,
+      component: () =>
+        import(/* webpackChunkName: "bundle.heroes" */ "./views/hero-detail.vue")
     },
     {
       path: "/about",
       name: "about",
-      component: () => import("./views/about.vue")
+      component: () =>
+        import(/* webpackChunkName: "bundle.about" */ "./views/about.vue")
     },
     {
       path: "*",

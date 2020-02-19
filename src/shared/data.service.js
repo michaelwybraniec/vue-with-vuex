@@ -1,25 +1,38 @@
-import * as axios from "axios";
+import axios from "axios";
 import { format } from "date-fns";
 import { inputDateFormat } from "./constants";
 import { db } from "./data";
 import { API } from "./config";
 
-const getHeroes = async function() {
+const getHeroes = async () => {
+  let apiKey = "apikey=c57d263f5e59e2805cebe38c6f1f63c0";
+  let url = "https://gateway.marvel.com:443/v1/public/characters?" + apiKey;
+  const requestOptions = {
+    method: "GET",
+    format: "json",
+    api_key: apiKey
+  };
+  return axios(url, requestOptions)
+    .then(response => {
+      let data = parseList(response);
+      console.log("data.service: getHeroes: response", data);
+      return data.data.results;
+    })
+    .catch(error => {
+      console.error(error);
+      return db.data;
+    });
+};
+
+const getHero = async function(id) {
   try {
-    let apiKey = "apikey=c57d263f5e59e2805cebe38c6f1f63c0";
-    let url = "https://gateway.marvel.com:443/v1/public/characters?" + apiKey;
-    const requestOptions = {
-      method: "GET",
-      format: "json",
-      api_key: apiKey
-    };
-    const response = await axios(url, requestOptions);
-    let data = parseList(response);
-    console.success("response", data);
-    return data;
+    const response = await axios.get(`${API}/heroes/${id}`);
+    let hero = parseItem(response, 200);
+    hero.fullName = `${hero.firstName} ${hero.lastName}`;
+    return hero;
   } catch (error) {
     console.error(error);
-    return [];
+    return null;
   }
 };
 
@@ -54,6 +67,7 @@ export const parseItem = (response, code) => {
 };
 
 export const dataService = {
+  getHero,
   getHeroes,
   updateHero
 };
