@@ -11,25 +11,40 @@
             <b-col>
               <div v-if="!selectedHero">
                 <p class="mt-1 text-right">{{APIorJSONDB}}</p>
-                <p
-                  class="mt-1 text-right"
-                >Current Page: {{ currentPage }}, People: {{heroes.length}}</p>
-          
-                <b-pagination v-model="currentPage" :total-rows="50" align="right"></b-pagination>
-              
+            
+                <b-button class="button refresh-button" @click="loadHeroes()">
+                 get heroes<i class="fas fa-sync"></i>
+                </b-button>
+
+            <!--     <router-link
+                  tag="button"
+                  class="button add-button"
+                  :to="{ name: 'hero-detail', params: { id: 0 } }"
+                  >router link
+                   <i class="fas fa-plus"></i>
+                </router-link> -->
+
                 <b-list-group v-for="(index, hero) in heroes" :hero="hero" :key="hero.id">
                   <b-list-group-item button class="shadow-sm mt-1" @click="selectHero(index)">
                     <b>{{ index.name }}</b>
                     <div class="description">{{ index.description }}</div>
                   </b-list-group-item>
+                  
+   <!-- <router-link
+                    tag="button"
+                    class="link card-footer-item"
+                    :to="{ name: 'hero-detail', params: { id: hero.name } }"
+                  />
+                   -->
                 </b-list-group>
               </div>
-              <HeroDetail
+           <HeroDetail
                 :hero="selectedHero"
                 @save="saveHero"
                 @cancel="cancelHero"
                 v-if="selectedHero"
-              />
+              /> 
+              
             </b-col>
           </b-row>
         </b-card>
@@ -46,7 +61,7 @@ export default {
   data() {
     return {
       message: "",
-      selectedHero: {},
+      selectedHero: undefined,
       APIorJSONDB: false
     };
   },
@@ -54,10 +69,9 @@ export default {
     HeroDetail
   },
 
-  async created() {
-   await this.loadHeroes();
-  },
+
   async mounted() {
+   await this.loadHeroes();
     this.setFirstPage();
   },
   watch: {

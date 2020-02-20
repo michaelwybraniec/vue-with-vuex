@@ -97,7 +97,7 @@ export default {
   },
   data() {
     return {
-      clonedHero: { ...this.hero }, // to avoid obj mutation.
+      clonedHero: {},
       message: "",
       message4comics: "",
       messageNoComics: "",
@@ -118,10 +118,14 @@ export default {
     }
   },
   async mounted() {
+    await this.cloneHero();
     await this.loadPics();
     await this.loadComics();
   },
   methods: {
+      async cloneHero(){
+     this.clonedHero = { ...this.hero } // to avoid obj mutation.
+    },
     async loadPics() {
       this.message = "Loading photo...";
       this.pic = this.clonedHero.thumbnail 
@@ -133,10 +137,9 @@ export default {
         this.message = "";
       } else this.message = "Err.";
     },
-  
-    async loadComics() {
+     loadComics() {
       this.message4comics = "And now getting comics info...";
-      setTimeout(() => {
+
         this.comicses = this.clonedHero.comics.items;
         console.log(
           "All comics available:",
@@ -148,14 +151,14 @@ export default {
           this.messageNoComics = "";
         }
         this.message4comics = "";
-      }, 1000);
     },
     cancelHero() {
       this.$emit("cancel");
     },
     async saveHero() {
       this.$emit("save", this.clonedHero);
-    }
+    },
+    
   }
 };
 </script>

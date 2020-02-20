@@ -23,7 +23,7 @@ export default new Router({
       path: "/hero/:id",
       name: "hero-detail",
       // props: true,
-      props: parseProps,
+      // props: parseProps,
       component: () =>
         import(/* webpackChunkName: "bundle.heroes" */ "./views/hero-detail.vue")
     },
