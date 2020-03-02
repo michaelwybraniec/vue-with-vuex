@@ -1,16 +1,17 @@
 <template>
   <b-container>
-    <div class="mt-4 mb-4 text-center" v-show="message" style="padding-top: 200px">
+    <div class="mt-4 mb-4 text-center" v-show="message" style="padding-top: 100px">
       <b-spinner type="grow"></b-spinner>
       <p>{{ message }}</p>
     </div>
+    <div v-if="!message">
     <fade-transition>
-      <b-card-group deck v-if="heroes.length > 0">
+      <b-card-group deck>
         <b-card header="Vue App 4 Peaks" class="shadow">
           <b-row>
             <b-col>
               <div v-if="!selectedHero">
-                <p class="mt-1 text-right">{{APIorJSONDB}}</p>
+                <!-- <p class="mt-1 text-right">{{APIorJSONDB}}</p> -->
             
                 <b-button class="button refresh-button" @click="loadHeroes()">
                  get heroes<i class="fas fa-sync"></i>
@@ -50,6 +51,7 @@
         </b-card>
       </b-card-group>
     </fade-transition>
+    </div>
   </b-container>
 </template>
 
@@ -62,7 +64,7 @@ export default {
     return {
       message: "",
       selectedHero: undefined,
-      APIorJSONDB: false
+      //APIorJSONDB: false // this should come from the sotre...
     };
   },
   components: { 
